@@ -5,15 +5,21 @@ import sys
 
 from colorama import Fore
 
-try:
-    import psutil
-except ImportError:
-    psutil = None
-
 logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s] - %(asctime)s - %(message)s",
 )
+
+try:
+    import psutil
+except ImportError:
+    psutil = None
+    if not sys.platform == "linux":
+        logging.error(
+            f"""{Fore.RED}ss command only works in Linux machines. Please install psutil using:
+            {Fore.LIGHTCYAN_EX}pip install psutil colorama{Fore.WHITE}"""
+        )
+        sys.exit(1)
 
 
 def get_used_ports() -> set[str]:
