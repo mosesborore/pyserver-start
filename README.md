@@ -24,7 +24,7 @@ pip install colorama psutil
 Run the improved server script:
 
 ```sh
-python parser_improved.py [--port PORT] [--directory DIR]
+python main.py [--port PORT] [--directory DIR]
 ```
 
 - `--port PORT`: (Optional) Port to start searching from (default: 5000)
@@ -32,7 +32,7 @@ python parser_improved.py [--port PORT] [--directory DIR]
 
 Example:
 ```sh
-python parser_improved.py --port 8080 --directory /path/to/serve
+python main.py --port 8080 --directory /path/to/serve
 ```
 
 The script will:
