@@ -27,6 +27,7 @@ def get_used_ports() -> set[str]:
     Returns a set of all used ports using psutil if available, otherwise falls back to parsing `ss` command output.
     """
     used_ports = set()
+
     if psutil:
         logging.info(f"{Fore.CYAN}Checking for used ports with psutil{Fore.WHITE}")
         for conn in psutil.net_connections():
@@ -39,6 +40,7 @@ def get_used_ports() -> set[str]:
         process = subp.Popen(["ss", "-a"], stdout=subp.PIPE)
         output = process.communicate()
         socket_lines = output[0].decode().split("\n")
+
         for socket_line in socket_lines[1:]:
             split_line = [i for i in socket_line.split(" ") if i != ""]
             localPort = ""
@@ -54,6 +56,7 @@ def get_used_ports() -> set[str]:
                     _, peerPort = split_line[5].rsplit(":", 1)
             used_ports.add(peerPort)
             used_ports.add(localPort)
+
     return used_ports
 
 
@@ -99,13 +102,16 @@ def main():
 
     used_ports = get_used_ports()
     free_port = args.port
+
     while True:
         if str(free_port) in used_ports:
             free_port += 1
         else:
             break
     logging.info(f"{Fore.GREEN}[Done] Free Port Found: {free_port}{Fore.WHITE}")
+
     server_process = start_server(free_port, args.directory)
+
     try:
         wait_for_exit_command()
     finally:
